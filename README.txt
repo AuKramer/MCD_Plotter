@@ -29,10 +29,11 @@ Be sure to check you've inverted the sign if you are using any raw data from the
 
 Once you have created the necessary input files you can use the mcd-b-molcas script to calculate the B terms. Use a 1710 cm broadening factor to match a 0.15 eV broadening for spec-gen. 
 NOTE: The intensity will be identical between methods. The final units are in delta ellipticity which is the experimental unit for MCD.
+NOTE: The spec-gen script with mcd functionality can be found at "https://github.com/AuKramer/spec-gen"
 
 Once you run ./mcd-b-molcas and have your mcd-b-spectrum-# files use the mcd-b-spectrum-0 files edited to match the ideal broadening values required. The options.dat file used for the same method can be found in the Molcas_Scripts directory. 
 NOTE: The states number must match identically the states used in the original gaussian calculation +1 as Molcas counts the ground state as 1 instead of 0. The same convention is kept if you are using any of the SOS keywords. (Ex: 10 states is states_sos = 11) The ! symbol is used to comment out keywords you don't want to use in the calculation.
-NOTE: If you would like to use spec-gen_MCD to broaden your output data you should use the keyword specgen=.T. in the options.dat so that the output is in the 
+NOTE: If you would like to use spec-gen to broaden your output data you should use the keyword specgen=.T. in the options.dat so that the output is in the 
 correct format. 
 
 Ater you have your mcd-b-spectrum files you can run ./plot-mcdspectrum < filename which will produce a graph.dat and impulses.dat file. 
@@ -54,13 +55,13 @@ NOTE: This will not crash if you ask for more states than within the file, but w
 
 This will produce two files B_terms.txt and B_contributions.txt
 
-B_terms.txt is an input file for spec-gen_MCD.py and is used for plotting the spectrum itself. It follows the same input structure as previous iterations of spec-gen with the #State# (broadening type) format. The MCD_plotter script will automatically put the number of states used at the top you need only specify mcdb or mcda for plotting.
-NOTE: While spec-gen_MCD has the ability to graph mcda data the MCD_plotter script can only produce mcdb terms at present so you will need to input the data from another program
+B_terms.txt is an input file for spec-gen.py and is used for plotting the spectrum itself. It follows the same input structure as previous iterations of spec-gen with the #State# (broadening type) format. The MCD_plotter script will automatically put the number of states used at the top you need only specify mcdb or mcda for plotting.
+NOTE: While spec-gen has the ability to graph mcda data the MCD_plotter script can only produce mcdb terms at present so you will need to input the data from another program
 to use this functionality.
 
 To call spec-gen the basic functionality looks like this:
 
-python3 spec-gen_MCD.py -i input.spec -g 0.15 
+python3 spec-gen.py -i input.spec -g 0.15 
 
 where -g specifies gaussian broadening with the value of interest.
 NOTE: The MCD version of spec-gen is only currently optimized for gaussian broadening, while it may work for Lorentzian, it is not recommended. 
