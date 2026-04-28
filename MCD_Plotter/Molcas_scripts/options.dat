@@ -1,8 +1,8 @@
-&options
+&options 
 nstates = 201,
 degen = 0,   
 ddelta =1e-5,      
 temp = 273,     
-nospin = true 
-!states_sos = 101
+nospin = true, 
+specgen=.T.
 /
