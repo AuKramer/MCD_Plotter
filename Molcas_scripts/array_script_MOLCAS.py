@@ -42,7 +42,7 @@ def parse_multidip_file(filename, invert=False):
                     deltaE_ev = float(parts[5])
                     deltaE_au = deltaE_ev * EV_TO_AU
 
-                    # --- Optional inversion on read ---
+                    # --- CHANGE 1: optional inversion on read ---
                     if invert:
                         x = -x
                         y = -y
@@ -55,21 +55,22 @@ def parse_multidip_file(filename, invert=False):
                     continue
     return dipoles, sorted(states)
 
-compound_name = "CompoundName"  
+compound_name = "CompoundName"  # set as appropriate
 elec_file = 'transdipmom_elec.txt'
 mag_file  = 'transdipmom_mag.txt'
 
 # Electric: normal read
 mu_elec, states_elec = parse_multidip_file(elec_file, invert=False)
 
-# Magnetic: reads inverted data
+# Magnetic: SAME logic, but with sign-inverted components on read
 mu_mag,  states_mag  = parse_multidip_file(mag_file, invert=True)
 
+# Union of all states
 all_states = sorted(set(states_elec) | set(states_mag))
 states_shifted = [s + 1 for s in all_states]
 n_states = max(states_shifted)
 
-# Build energies from 0 -> s transitions 
+# Build energies from 0 -> s transitions (unchanged)
 energies_au = []
 for s_shift in range(1, n_states + 1):
     s = s_shift - 1
@@ -120,7 +121,7 @@ def write_dipole_files(dipole_dict, all_states, prefix, compound_name, antisymme
                     lines.append((j_shift, i_shift, vals_bwd))
                     seen.add((j_shift, i_shift))
 
-    # Sort by second state, then first 
+    # Sort by second state, then first (unchanged)
     lines_sorted = sorted(lines, key=lambda x: (x[1], x[0]))
     for comp_idx, comp_name in enumerate(components):
         filename = f"{prefix}-{comp_name}.txt"
@@ -132,7 +133,7 @@ def write_dipole_files(dipole_dict, all_states, prefix, compound_name, antisymme
 # Electric dipoles: symmetric handling (no inversion, no antisymmetry)
 write_dipole_files(mu_elec, all_states, 'dipole', compound_name, antisymmetric=False)
 
-# Magnetic dipoles: values already inverted on read, antisymmetric 
+# Magnetic dipoles: values already inverted on read, antisymmetric enforced here
 write_dipole_files(mu_mag,  all_states, 'angmom', compound_name, antisymmetric=True)
 
 print("Generated energies.txt, dipole-[1..3].txt, and angmom-[1..3].txt with OM Format.")

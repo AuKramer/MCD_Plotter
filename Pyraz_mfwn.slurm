@@ -7,8 +7,8 @@
 #SBATCH --cluster=faculty
 #SBATCH --partition=jochena
 #SBATCH --qos=jochena
-#SBATCH --job-name=Pyrim_mwfn
-#SBATCH --output=Pyrim_mwfn.out
+#SBATCH --job-name=Pyraz_mwfn
+#SBATCH --output=Pyraz_mwfn.out
 
 export SCRATCH_DIR=$SLURMTMPDIR
 export NNODES=`srun -l hostname | uniq | wc -l`
@@ -24,8 +24,8 @@ module load motif/2.3.8
 
 ./Multiwfn_noGUI_Pyraz Pyraz_cd_200_full_ext.fchk < elec_mwfn.in
 
-mv transdipmom.txt transdipmom_elec_Pyrim.txt
+mv transdipmom.txt transdipmom_elec_Pyraz.txt
 
 ./Multiwfn_noGUI_Pyraz Pyraz_cd_200_full_ext.fchk < mag_mwfn.in
 
-mv transdipmom.txt transdipmom_mag_Pyrim.txt
+mv transdipmom.txt transdipmom_mag_Pyraz.txt
